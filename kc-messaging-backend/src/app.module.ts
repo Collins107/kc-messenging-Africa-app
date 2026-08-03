@@ -6,7 +6,6 @@ import { AuthModule } from './auth/auth.module';
 import { ChatModule } from './chat/chat.module';
 import { RealtimeModule } from './realtime/realtime.module';
 import { StorageModule } from './storage/storage.module';
-import { MediaModule } from './media/media.module';
 import * as Joi from 'joi';
 
 @Module({
@@ -29,7 +28,6 @@ import * as Joi from 'joi';
     ChatModule,
     RealtimeModule,
     StorageModule,
-    MediaModule,
   ],
 })
 export class AppModule {}
