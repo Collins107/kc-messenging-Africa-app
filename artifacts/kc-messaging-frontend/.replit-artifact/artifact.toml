@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "KC Messaging"
+description = "KC Messaging is a real-time messaging web app. Users sign in with a phone number via OTP, then send and receive messages in one-on-one or group conversations using WebSockets."
+version = "1.0.0"
+id = "artifacts/kc-messaging-frontend"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 20863
+
+[services.development]
+run = "pnpm --filter @workspace/kc-messaging-frontend run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/kc-messaging-frontend", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/kc-messaging-frontend/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20863"
+BASE_PATH = "/"
