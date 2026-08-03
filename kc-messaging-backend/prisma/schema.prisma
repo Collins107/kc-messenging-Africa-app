@@ -1,0 +1,99 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(uuid())
+  phone       String   @unique
+  displayName String?
+  avatarUrl   String?
+  createdAt   DateTime @default(now())
+  lastSeenAt  DateTime @default(now())
+
+  devices        Device[]
+  participants   ConversationParticipant[]
+  messagesSent   Message[]                 @relation("MessageSender")
+  refreshTokens  RefreshToken[]
+}
+
+// Backend keys sessions by deviceId, per the frontend's api.ts contract
+model Device {
+  id           String   @id @default(uuid()) // this IS the deviceId the frontend stores
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  pushToken    String?
+  platform     String?
+  createdAt    DateTime @default(now())
+
+  refreshTokens RefreshToken[]
+
+  @@index([userId])
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  tokenHash String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  deviceId  String
+  device    Device   @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([userId, deviceId])
+}
+
+model OtpCode {
+  id        String   @id @default(uuid())
+  phone     String
+  codeHash  String
+  expiresAt DateTime
+  attempts  Int      @default(0)
+  consumed  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([phone])
+}
+
+model Conversation {
+  id        String   @id @default(uuid())
+  isGroup   Boolean  @default(false)
+  title     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  participants ConversationParticipant[]
+  messages     Message[]
+}
+
+model ConversationParticipant {
+  id             String       @id @default(uuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  joinedAt       DateTime     @default(now())
+  lastReadAt     DateTime?
+
+  @@unique([conversationId, userId])
+  @@index([userId])
+}
+
+model Message {
+  id             String       @id @default(uuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId       String
+  sender         User         @relation("MessageSender", fields: [senderId], references: [id])
+  body           String
+  createdAt      DateTime     @default(now())
+  deliveredAt    DateTime?
+
+  @@index([conversationId, createdAt])
+}
