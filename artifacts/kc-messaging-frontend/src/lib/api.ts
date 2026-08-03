@@ -1,3 +1,5 @@
+import { refreshSocketAuth } from "./socket";
+
 // Matches kc-messaging-backend's endpoint contract exactly — see its README.
 // Every request/response shape here mirrors the DTOs and controller returns
 // in src/auth/* and src/chat/* of that repo.
@@ -116,6 +118,12 @@ async function doRefresh(): Promise<boolean> {
   }
   const tokens = (await res.json()) as TokenPair;
   setTokens(tokens);
+  // After refreshing tokens, ensure websocket auth gets the new access token
+  try {
+    refreshSocketAuth();
+  } catch {
+    // ignore if sockets are not initialized
+  }
   return true;
 }
 
@@ -240,5 +248,4 @@ export function sendMessage(conversationId: string, body: string) {
 }
 
 export function markRead(conversationId: string) {
-  return request<{ ok: boolean }>(`/conversations/${conversationId}/read`, { method: "POST" });
-}
+  return request<{ ok: boolean }>(`/conversations/${conversationId}/read`, { method: "POST
