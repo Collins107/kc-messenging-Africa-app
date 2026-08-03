@@ -5,20 +5,21 @@ import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { ChatModule } from './chat/chat.module';
 import { RealtimeModule } from './realtime/realtime.module';
-
-function validateEnv(env: Record<string, any>) {
-  const required = ['DATABASE_URL', 'JWT_ACCESS_SECRET', 'JWT_REFRESH_SECRET', 'CORS_ORIGIN'];
-  for (const key of required) {
-    if (!env[key]) throw new Error(`${key} is required`);
-  }
-  return env;
-}
+import * as Joi from 'joi';
 
 @Module({
   imports: [
-    // Validate required env vars at startup so the app fails fast when something is missing
-    ConfigModule.forRoot({ isGlobal: true, validate: validateEnv }),
-    // Throttler expects an object with ttl in seconds and limit
+    ConfigModule.forRoot({
+      isGlobal: true,
+      validationSchema: Joi.object({
+        DATABASE_URL: Joi.string().uri().required(),
+        JWT_ACCESS_SECRET: Joi.string().min(16).required(),
+        JWT_REFRESH_SECRET: Joi.string().min(16).required(),
+        CORS_ORIGIN: Joi.string().required(),
+        PORT: Joi.number().default(3000),
+        OTP_DEV_MODE: Joi.string().valid('true', 'false').default('true'),
+      }),
+    }),
     ThrottlerModule.forRoot({ ttl: 60, limit: 20 }), // guards OTP send endpoint from abuse
     PrismaModule,
     AuthModule,
