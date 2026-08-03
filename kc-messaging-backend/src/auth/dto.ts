@@ -1,4 +1,4 @@
-import { IsString, Matches, Length, IsOptional } from 'class-validator';
+import { IsString, Matches, Length, IsOptional, IsEmail } from 'class-validator';
 
 export class SendOtpDto {
   @IsString()
@@ -16,6 +16,7 @@ export class VerifyOtpDto {
   code: string;
 
   // Frontend generates/stores this per-install and sends it on every auth call
+  @IsOptional()
   @IsString()
   deviceId?: string;
 
@@ -30,4 +31,57 @@ export class RefreshDto {
 
   @IsString()
   deviceId: string;
+}
+
+export class RegisterDto {
+  @IsOptional()
+  @IsEmail()
+  email?: string;
+
+  @IsOptional()
+  @IsString()
+  @Matches(/^\+[1-9]\d{6,14}$/, { message: 'phone must be E.164 format, e.g. +2348012345678' })
+  phone?: string;
+
+  @IsOptional()
+  @IsString()
+  displayName?: string;
+
+  @IsOptional()
+  @IsString()
+  @Length(6, 128)
+  password?: string;
+}
+
+export class LoginDto {
+  @IsOptional()
+  @IsEmail()
+  email?: string;
+
+  @IsOptional()
+  @IsString()
+  @Matches(/^\+[1-9]\d{6,14}$/, { message: 'phone must be E.164 format, e.g. +2348012345678' })
+  phone?: string;
+
+  @IsOptional()
+  @IsString()
+  password?: string;
+
+  @IsOptional()
+  @IsString()
+  deviceId?: string;
+}
+
+export class ForgotPasswordDto {
+  @IsEmail()
+  email: string;
+}
+
+export class ResetPasswordDto {
+  @IsString()
+  token: string;
+
+  @IsString()
+  @Length(6, 128)
+  newPassword: string;
 }
