@@ -5,7 +5,9 @@ import { refreshSocketAuth } from "./socket";
 // in src/auth/* and src/chat/* of that repo.
 
 const rawApiUrl = import.meta.env.VITE_API_URL as string | undefined;
-export const API_URL = (rawApiUrl ?? 'http://localhost:3000').replace(/\/$/, '');
+const baseApi = (rawApiUrl ?? 'http://localhost:3000').replace(/\/$/, '');
+// Ensure API_URL points to the NestJS '/api' prefix so frontend calls match backend routes.
+export const API_URL = baseApi.endsWith('/api') ? baseApi : `${baseApi}/api`;
 
 export type User = {
   id: string;
@@ -248,4 +250,5 @@ export function sendMessage(conversationId: string, body: string) {
 }
 
 export function markRead(conversationId: string) {
-  return request<{ ok: boolean }>(`/conversations/${conversationId}/read`, { method: "POST
+  return request<{ ok: boolean }>(`/conversations/${conversationId}/read`, { method: "POST" });
+}
