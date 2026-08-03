@@ -254,3 +254,49 @@ model Subscription {
   startedAt DateTime?
   endedAt  DateTime?
 }
+
+// Phase 5 foundation additions: SFUSession, Recording, Stream, Organization, Team
+
+model SFUSession {
+  id         String   @id @default(uuid())
+  roomName   String
+  createdBy  String
+  startedAt  DateTime @default(now())
+  endedAt    DateTime?
+  metadata   Json?
+
+  recordings Recording[]
+}
+
+model Recording {
+  id           String   @id @default(uuid())
+  sessionId    String
+  session      SFUSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  manifestPath String
+  duration     Int?
+  size         Int?
+  createdAt    DateTime @default(now())
+}
+
+model Stream {
+  id        String   @id @default(uuid())
+  ownerId   String
+  title     String
+  ingestKey String  @unique
+  status    String  @default("scheduled")
+  createdAt DateTime @default(now())
+}
+
+model Organization {
+  id        String   @id @default(uuid())
+  name      String
+  ownerId   String
+  createdAt DateTime @default(now())
+}
+
+model Team {
+  id             String   @id @default(uuid())
+  organizationId String
+  name           String
+  createdAt      DateTime @default(now())
+}
