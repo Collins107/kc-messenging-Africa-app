@@ -138,3 +138,119 @@ model Media {
 
   @@index([ownerId])
 }
+
+// Phase 4 additions: Groups, Communities, Channels, Polls, Stories, Business, Products, Orders, Subscriptions
+
+model "Group" {
+  id          String   @id @default(uuid())
+  ownerId     String
+  owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  isPrivate   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  members     GroupMember[]
+}
+
+model GroupMember {
+  id        String   @id @default(uuid())
+  groupId   String
+  group     "Group" @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      String   @default("member")
+  joinedAt  DateTime @default(now())
+  mutedUntil DateTime?
+  banned    Boolean  @default(false)
+
+  @@unique([groupId, userId])
+}
+
+model Community {
+  id        String   @id @default(uuid())
+  name      String
+  description String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  groups    "Group"[]
+}
+
+model Channel {
+  id        String   @id @default(uuid())
+  name      String
+  type      String
+  ownerId   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Poll {
+  id        String   @id @default(uuid())
+  question  String
+  options   Json
+  endsAt    DateTime?
+  createdBy String
+  createdAt DateTime @default(now())
+}
+
+model PollVote {
+  id       String   @id @default(uuid())
+  pollId   String
+  userId   String
+  choice   Int
+  createdAt DateTime @default(now())
+}
+
+model Story {
+  id        String   @id @default(uuid())
+  ownerId   String
+  mediaId   String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model StoryView {
+  id       String   @id @default(uuid())
+  storyId  String
+  viewerId String
+  viewedAt DateTime @default(now())
+}
+
+model Business {
+  id        String   @id @default(uuid())
+  ownerId   String
+  profile   Json
+  verified  Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Product {
+  id         String   @id @default(uuid())
+  businessId String
+  title      String
+  price      Float
+  inventory  Int      @default(0)
+  metadata   Json?
+  createdAt  DateTime @default(now())
+}
+
+model "Order" {
+  id        String   @id @default(uuid())
+  buyerId   String
+  items     Json
+  total     Float
+  status    String
+  createdAt DateTime @default(now())
+}
+
+model Subscription {
+  id       String   @id @default(uuid())
+  userId   String
+  planId   String
+  status   String
+  startedAt DateTime?
+  endedAt  DateTime?
+}
