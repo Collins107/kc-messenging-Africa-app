@@ -20,6 +20,29 @@ export class AuthService {
     return createHash('sha256').update(value).digest('hex');
   }
 
+  // Parse TTL strings like '15m', '30d', '3600s', '1h' into milliseconds.
+  private parseTtlToMs(ttl: string | undefined, fallbackMs = 30 * 24 * 60 * 60 * 1000) {
+    if (!ttl) return fallbackMs;
+    const m = ttl.match(/^(\d+)(ms|s|m|h|d)?$/i);
+    if (!m) return fallbackMs;
+    const n = parseInt(m[1], 10);
+    const unit = (m[2] || 's').toLowerCase();
+    switch (unit) {
+      case 'ms':
+        return n;
+      case 's':
+        return n * 1000;
+      case 'm':
+        return n * 60 * 1000;
+      case 'h':
+        return n * 60 * 60 * 1000;
+      case 'd':
+        return n * 24 * 60 * 60 * 1000;
+      default:
+        return fallbackMs;
+    }
+  }
+
   // --- OTP ---
 
   async sendOtp(phone: string) {
@@ -102,12 +125,17 @@ export class AuthService {
       },
     );
 
+    // Derive DB expiry from JWT_REFRESH_TTL so DB expiry matches token expiry.
+    const refreshTtlEnv = this.config.get('JWT_REFRESH_TTL') as string | undefined;
+    const expiresMs = this.parseTtlToMs(refreshTtlEnv, 30 * 24 * 60 * 60 * 1000);
+    const expiresAt = new Date(Date.now() + expiresMs);
+
     await this.prisma.refreshToken.create({
       data: {
         tokenHash: this.hash(refreshToken),
         userId,
         deviceId,
-        expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+        expiresAt,
       },
     });
 
