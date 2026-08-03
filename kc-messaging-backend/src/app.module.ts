@@ -16,8 +16,8 @@ import * as Joi from 'joi';
         DATABASE_URL: Joi.string().uri().required(),
         JWT_ACCESS_SECRET: Joi.string().min(16).required(),
         JWT_REFRESH_SECRET: Joi.string().min(16).required(),
-        JWt_REFRESH_SECRET: Joi.string().min(16).required(),
-        CORS_ORIGIN: Joi.string().required(),
+        // removed duplicate/typo JWt_REFRESH_SECRET
+        CORS_ORIGIN: Joi.string().allow('').optional(),
         PORT: Joi.number().default(3000),
         OTP_DEV_MODE: Joi.string().valid('true', 'false').default('true'),
       }),
