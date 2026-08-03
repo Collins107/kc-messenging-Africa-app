@@ -1,0 +1,11 @@
+{
+  "name": "kc-messaging-web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "echo 'No frontend build configured for CI stub' && exit 0",
+    "test": "echo 'No frontend tests configured for CI stub' && exit 0"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
