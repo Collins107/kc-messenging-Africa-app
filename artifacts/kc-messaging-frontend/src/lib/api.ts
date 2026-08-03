@@ -2,7 +2,8 @@
 // Every request/response shape here mirrors the DTOs and controller returns
 // in src/auth/* and src/chat/* of that repo.
 
-const API_URL = import.meta.env.VITE_API_URL;
+const rawApiUrl = import.meta.env.VITE_API_URL as string | undefined;
+export const API_URL = (rawApiUrl ?? 'http://localhost:3000').replace(/\/$/, '');
 
 export type User = {
   id: string;
