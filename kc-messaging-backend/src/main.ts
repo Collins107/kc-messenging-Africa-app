@@ -14,7 +14,9 @@ async function bootstrap() {
     new ValidationPipe({ whitelist: true, transform: true }),
   );
 
-  app.setGlobalPrefix('', { exclude: [] });
+  // Expose all REST controllers under /api so they match the OpenAPI
+  // specification and the generated frontend client.
+  app.setGlobalPrefix('api');
 
   const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
   await app.listen(port);
