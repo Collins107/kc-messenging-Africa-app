@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Print-ready back artwork for K. C. Ventures employee ID
+     - CR80 size with 3mm bleed
+     - Document size: 91.6mm x 60mm (85.6 + 6, 54 + 6)
+     - Artwork inset 3mm from edges (safe area: 3mm margin)
+     - Crop marks included
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="91.6mm" height="60mm" viewBox="0 0 916 600" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <style>
+      .accent { fill:#C9A000 }
+      .brand { fill:#0b5ed7; font-family: Arial, Helvetica, sans-serif; font-weight:700 }
+      .label { fill:#0b5ed7; font-family: Arial, Helvetica, sans-serif; font-weight:700 }
+      .value { fill:#222222; font-family: Arial, Helvetica, sans-serif }
+    </style>
+  </defs>
+
+  <!-- Bleed background -->
+  <rect x="0" y="0" width="916" height="600" fill="#ffffff"/>
+
+  <!-- Top gold accent stripe -->
+  <rect x="0" y="0" width="916" height="40" fill="#C9A000" rx="8" ry="8" />
+
+  <!-- Company logo placeholder (left-top safe area) -->
+  <g transform="translate(40,56)">
+    <rect x="0" y="0" width="160" height="60" rx="8" ry="8" fill="#f5f5f5" stroke="#ddd" />
+    <text x="80" y="36" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#888888" text-anchor="middle">Company Logo</text>
+  </g>
+
+  <!-- Emergency contact and company email -->
+  <text x="40" y="160" class="label" font-size="16">Emergency Contact</text>
+  <text x="40" y="188" class="value" font-size="14">+234 703 133 6258</text>
+
+  <text x="40" y="232" class="label" font-size="16">Company Email</text>
+  <text x="40" y="260" class="value" font-size="14">kelvindaniel1022@gmail.com</text>
+
+  <!-- Barcode area (center-left) -->
+  <g transform="translate(40,300)">
+    <rect x="0" y="0" width="380" height="120" fill="#ffffff" stroke="#ddd" rx="6" ry="6" />
+    <!-- decorative bars -->
+    <rect x="12" y="12" width="6" height="96" fill="#000" />
+    <rect x="30" y="12" width="3" height="96" fill="#000" />
+    <rect x="48" y="12" width="8" height="96" fill="#000" />
+    <rect x="72" y="12" width="4" height="96" fill="#000" />
+    <rect x="94" y="12" width="2" height="96" fill="#000" />
+    <rect x="116" y="12" width="6" height="96" fill="#000" />
+    <rect x="146" y="12" width="3" height="96" fill="#000" />
+    <rect x="170" y="12" width="8" height="96" fill="#000" />
+    <rect x="196" y="12" width="4" height="96" fill="#000" />
+    <rect x="224" y="12" width="6" height="96" fill="#000" />
+  </g>
+
+  <!-- Signature lines -->
+  <g transform="translate(440,300)" font-family="Arial, Helvetica, sans-serif" fill="#222">
+    <text x="0" y="0" font-size="13" font-weight="700">Employee Signature</text>
+    <line x1="0" y1="12" x2="360" y2="12" stroke="#222" stroke-width="1"/>
+    <text x="0" y="40" font-size="12" fill="#666">(Sign &amp; Date)</text>
+
+    <text x="0" y="90" font-size="13" font-weight="700">Authorized Officer</text>
+    <line x1="0" y1="102" x2="360" y2="102" stroke="#222" stroke-width="1"/>
+    <text x="0" y="130" font-size="12" fill="#666">(Sign &amp; Date)</text>
+  </g>
+
+  <!-- Space for company stamp -->
+  <g transform="translate(440,96)">
+    <rect x="0" y="0" width="360" height="180" rx="8" ry="8" fill="#f8f8f8" stroke="#ddd" />
+    <text x="180" y="90" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#999" text-anchor="middle">Company Stamp</text>
+    <text x="180" y="116" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#bbb" text-anchor="middle">(Affix here)</text>
+  </g>
+
+  <!-- Note about property -->
+  <text x="40" y="540" font-family="Arial, Helvetica, sans-serif" font-size="10" fill="#444">This card remains the property of K. C. Ventures and must be returned upon termination of employment.</text>
+
+  <!-- QR code small placeholder (bottom-left) -->
+  <g transform="translate(40,420)">
+    <rect x="0" y="0" width="110" height="110" rx="8" ry="8" fill="#f5f5f5" stroke="#cfcfcf" />
+    <text x="55" y="62" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#888888" text-anchor="middle">QR Code</text>
+  </g>
+
+  <!-- Small identifier -->
+  <text x="740" y="520" font-family="Arial, Helvetica, sans-serif" font-size="9" fill="#999" text-anchor="end">KCV • ID KCV-0001</text>
+
+  <!-- Crop marks -->
+  <g stroke="#000" stroke-width="1" stroke-linecap="square" fill="none">
+    <!-- Top-left -->
+    <line x1="10" y1="10" x2="60" y2="10" />
+    <line x1="10" y1="10" x2="10" y2="60" />
+    <!-- Top-right -->
+    <line x1="856" y1="10" x2="906" y2="10" />
+    <line x1="906" y1="10" x2="906" y2="60" />
+    <!-- Bottom-left -->
+    <line x1="10" y1="590" x2="60" y2="590" />
+    <line x1="10" y1="540" x2="10" y2="590" />
+    <!-- Bottom-right -->
+    <line x1="856" y1="590" x2="906" y2="590" />
+    <line x1="906" y1="540" x2="906" y2="590" />
+  </g>
+
+  <text x="456" y="595" font-family="Arial, Helvetica, sans-serif" font-size="6" fill="#666" text-anchor="middle">CR80 ID BACK — 85.6×54 mm + 3 mm bleed — Do not scale</text>
+</svg>
